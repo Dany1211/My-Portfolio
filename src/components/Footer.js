@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <p className="copyright">© {new Date().getFullYear()} Dnyanesh Mulay. All rights reserved.</p>
-        <p className="footer-tagline">React Native Developer</p>
+        <p className="footer-tagline">Full Stack App Developer</p>
       </div>
     </footer>
   );
