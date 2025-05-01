@@ -1,6 +1,7 @@
 // components/Navbar.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
+import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
@@ -20,31 +21,136 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Animation variants
+  const navItemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: i => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
+
+  const mobileNavVariants = {
+    closed: {
+      x: "100%",
+      opacity: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    },
+    open: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const mobileNavItemVariants = {
+    closed: { x: 20, opacity: 0 },
+    open: { x: 0, opacity: 1 }
+  };
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
         <Link to="hero" smooth={true} duration={500} className="logo">
-          <span className="logo-text">Dnyanesh</span>
-          <span className="logo-accent">Mulay</span>
+          <motion.span 
+            className="logo-text"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Dnyanesh
+          </motion.span>
+          <motion.span 
+            className="logo-accent"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Mulay
+          </motion.span>
         </Link>
 
         <div className="nav-links desktop-nav">
-          <Link to="about" smooth={true} duration={500} className="nav-link">About</Link>
-          <Link to="projects" smooth={true} duration={500} className="nav-link">Projects</Link>
-          <Link to="skills" smooth={true} duration={500} className="nav-link">Skills</Link>
-          <Link to="contact" smooth={true} duration={500} className="nav-link">Contact</Link>
+          {['about', 'projects', 'contact'].map((item, i) => (
+            <motion.div
+              key={item}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              variants={navItemVariants}
+            >
+              <Link 
+                to={item} 
+                smooth={true} 
+                duration={500} 
+                className="nav-link"
+              >
+                {item.charAt(0).toUpperCase() + item.slice(1)}
+              </Link>
+            </motion.div>
+          ))}
         </div>
 
-        <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-          <span className={`menu-icon ${isOpen ? 'open' : ''}`}></span>
-        </button>
-
-        <div className={`mobile-nav ${isOpen ? 'open' : ''}`}>
-          <Link to="about" smooth={true} duration={500} className="mobile-nav-link" onClick={() => setIsOpen(false)}>About</Link>
-          <Link to="projects" smooth={true} duration={500} className="mobile-nav-link" onClick={() => setIsOpen(false)}>Projects</Link>
-          <Link to="skills" smooth={true} duration={500} className="mobile-nav-link" onClick={() => setIsOpen(false)}>Skills</Link>
-          <Link to="contact" smooth={true} duration={500} className="mobile-nav-link" onClick={() => setIsOpen(false)}>Contact</Link>
+        <div className="menu-toggle-container">
+          <button 
+            className="menu-toggle" 
+            onClick={() => setIsOpen(!isOpen)} 
+            aria-label="Toggle navigation"
+          >
+            <div className={`hamburger ${isOpen ? 'open' : ''}`}>
+              <span className="bar"></span>
+              <span className="bar"></span>
+              <span className="bar"></span>
+            </div>
+          </button>
         </div>
+
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              className="mobile-nav"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={mobileNavVariants}
+            >
+              <div className="mobile-nav-content">
+                {['about', 'projects', 'contact'].map((item, i) => (
+                  <motion.div
+                    key={item}
+                    variants={mobileNavItemVariants}
+                    whileHover={{ x: 5 }}
+                  >
+                    <Link 
+                      to={item} 
+                      smooth={true} 
+                      duration={500} 
+                      className="mobile-nav-link" 
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );
