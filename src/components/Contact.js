@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import React, { useState,useEffect } from "react";
 import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaLinkedinIn,
   FaGithub,
   FaTwitter,
+  FaGoogle
 } from "react-icons/fa";
 import "../styles/Contact.css";
+import AOS from 'aos'; import 'aos/dist/aos.css';
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +17,10 @@ const Contact = () => {
     email: "",
     message: "",
   });
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+
+  useEffect(() => { AOS.init({ duration: 1000 }); }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,45 +30,27 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form data:", formData);
-    alert("Thank you for your message! I will get back to you soon.");
-    setFormData({ name: "", email: "", message: "" });
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    setIsFormSubmitted(true);
+    setTimeout(() => {
+      setIsFormSubmitted(false);
+      setFormData({ name: "", email: "", message: "" });
+    }, 3000);
   };
 
   return (
     <section id="contact" className="contact-section">
       <div className="contact-container">
-        <motion.div
-          className="section-header"
-          variants={itemVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          ref={ref}
-        >
+        <div className="section-header" data-aos="fade-up">
           <h2 className="section-title">Let's Connect</h2>
           <div className="accent-line"></div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="contact-content"
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-        >
-          <motion.div className="contact-info" variants={itemVariants}>
+        <div className="contact-content">
+          <div className="contact-info" data-aos="fade-right" data-aos-delay="100">
             <h3 className="contact-subtitle">Get In Touch</h3>
             <p className="contact-text">
               Always excited to collaborate, learn, and build! Feel free to
-              reach out.
+              reach out and let's create something amazing together.
             </p>
 
             <div className="contact-methods">
@@ -94,7 +80,8 @@ const Contact = () => {
                 href="https://www.linkedin.com/in/danymulay/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-link"
+                className="social-link linkedin"
+                aria-label="LinkedIn"
               >
                 <FaLinkedinIn />
               </a>
@@ -102,7 +89,8 @@ const Contact = () => {
                 href="https://github.com/Dany1211"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-link"
+                className="social-link github"
+                aria-label="GitHub"
               >
                 <FaGithub />
               </a>
@@ -110,60 +98,79 @@ const Contact = () => {
                 href="https://x.com/dany02020"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-link"
+                className="social-link twitter"
+                aria-label="Twitter"
               >
                 <FaTwitter />
               </a>
+              <a
+                href="mailto:dnyanesh2442@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link gmail"
+                aria-label="Gmail"
+              >
+                <FaGoogle />
+              </a>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="contact-form-container"
-            variants={itemVariants}
-          >
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
+          <div className="contact-form-container" data-aos="fade-left" data-aos-delay="200">
+            {isFormSubmitted ? (
+              <div className="form-success">
+                <div className="success-icon">✓</div>
+                <h3>Thank you!</h3>
+                <p>Your message has been sent successfully. I'll get back to you soon.</p>
               </div>
+            ) : (
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your name"
+                    required
+                  />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Your email address"
+                    required
+                  />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                ></textarea>
-              </div>
+                <div className="form-group">
+                  <label htmlFor="message">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="How can I help you?"
+                    required
+                  ></textarea>
+                </div>
 
-              <button type="submit" className="submit-btn">
-                Send Message <FaEnvelope style={{ marginLeft: "8px" }} />
-              </button>
-            </form>
-          </motion.div>
-        </motion.div>
+                <button type="submit" className="submit-btn">
+                  <span>Send Message</span>
+                  <FaEnvelope className="btn-icon" />
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );
