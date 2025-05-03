@@ -1,15 +1,15 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaLinkedinIn,
   FaGithub,
   FaTwitter,
-  FaGoogle
+  FaGoogle,
 } from "react-icons/fa";
 import "../styles/Contact.css";
-import AOS from 'aos'; import 'aos/dist/aos.css';
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,9 @@ const Contact = () => {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  useEffect(() => { AOS.init({ duration: 1000 }); }, []);
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +48,11 @@ const Contact = () => {
         </div>
 
         <div className="contact-content">
-          <div className="contact-info" data-aos="fade-right" data-aos-delay="100">
+          <div
+            className="contact-info"
+            data-aos="fade-right"
+            data-aos-delay="100"
+          >
             <h3 className="contact-subtitle">Get In Touch</h3>
             <p className="contact-text">
               Always excited to collaborate, learn, and build! Feel free to
@@ -104,7 +110,7 @@ const Contact = () => {
                 <FaTwitter />
               </a>
               <a
-                href="mailto:dnyanesh2442@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=dnyanesh2442@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link gmail"
@@ -115,12 +121,19 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className="contact-form-container" data-aos="fade-left" data-aos-delay="200">
+          <div
+            className="contact-form-container"
+            data-aos="fade-left"
+            data-aos-delay="200"
+          >
             {isFormSubmitted ? (
               <div className="form-success">
                 <div className="success-icon">✓</div>
                 <h3>Thank you!</h3>
-                <p>Your message has been sent successfully. I'll get back to you soon.</p>
+                <p>
+                  Your message has been sent successfully. I'll get back to you
+                  soon.
+                </p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
