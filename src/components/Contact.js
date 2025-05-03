@@ -5,11 +5,9 @@ import {
   FaLinkedinIn,
   FaGithub,
   FaTwitter,
-  FaGoogle,
+  FaGoogle
 } from "react-icons/fa";
 import "../styles/Contact.css";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,9 +17,29 @@ const Contact = () => {
   });
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
+  // Simple reveal animation on scroll
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    const handleScroll = () => {
+      const section = document.getElementById("contact");
+      if (section) {
+        const sectionTop = section.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (sectionTop < windowHeight - 150) {
+          setIsVisible(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    // Initial check in case section is already in view
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleChange = (e) => {
@@ -40,19 +58,15 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className={`contact-section ${isVisible ? 'visible' : ''}`}>
       <div className="contact-container">
-        <div className="section-header" data-aos="fade-up">
+        <div className="section-header">
           <h2 className="section-title">Let's Connect</h2>
           <div className="accent-line"></div>
         </div>
 
         <div className="contact-content">
-          <div
-            className="contact-info"
-            data-aos="fade-right"
-            data-aos-delay="100"
-          >
+          <div className={`contact-info ${isVisible ? 'fade-in-left' : ''}`}>
             <h3 className="contact-subtitle">Get In Touch</h3>
             <p className="contact-text">
               Always excited to collaborate, learn, and build! Feel free to
@@ -121,19 +135,12 @@ const Contact = () => {
             </div>
           </div>
 
-          <div
-            className="contact-form-container"
-            data-aos="fade-left"
-            data-aos-delay="200"
-          >
+          <div className={`contact-form-container ${isVisible ? 'fade-in-right' : ''}`}>
             {isFormSubmitted ? (
               <div className="form-success">
                 <div className="success-icon">✓</div>
                 <h3>Thank you!</h3>
-                <p>
-                  Your message has been sent successfully. I'll get back to you
-                  soon.
-                </p>
+                <p>Your message has been sent successfully. I'll get back to you soon.</p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
