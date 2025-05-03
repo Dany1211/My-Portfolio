@@ -5,9 +5,10 @@ import {
   FaLinkedinIn,
   FaGithub,
   FaTwitter,
-  FaGoogle
+  FaGoogle,
 } from "react-icons/fa";
 import "../styles/Contact.css";
+import { SiX } from "react-icons/si";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const Contact = () => {
       if (section) {
         const sectionTop = section.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
-        
+
         if (sectionTop < windowHeight - 150) {
           setIsVisible(true);
         }
@@ -36,7 +37,7 @@ const Contact = () => {
     window.addEventListener("scroll", handleScroll);
     // Initial check in case section is already in view
     handleScroll();
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -58,7 +59,10 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className={`contact-section ${isVisible ? 'visible' : ''}`}>
+    <section
+      id="contact"
+      className={`contact-section ${isVisible ? "visible" : ""}`}
+    >
       <div className="contact-container">
         <div className="section-header">
           <h2 className="section-title">Let's Connect</h2>
@@ -66,7 +70,7 @@ const Contact = () => {
         </div>
 
         <div className="contact-content">
-          <div className={`contact-info ${isVisible ? 'fade-in-left' : ''}`}>
+          <div className={`contact-info ${isVisible ? "fade-in-left" : ""}`}>
             <h3 className="contact-subtitle">Get In Touch</h3>
             <p className="contact-text">
               Always excited to collaborate, learn, and build! Feel free to
@@ -118,11 +122,12 @@ const Contact = () => {
                 href="https://x.com/dany02020"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-link twitter"
-                aria-label="Twitter"
+                className="social-link x"
+                aria-label="X"
               >
-                <FaTwitter />
+                <SiX />
               </a>
+
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=dnyanesh2442@gmail.com"
                 target="_blank"
@@ -135,12 +140,19 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className={`contact-form-container ${isVisible ? 'fade-in-right' : ''}`}>
+          <div
+            className={`contact-form-container ${
+              isVisible ? "fade-in-right" : ""
+            }`}
+          >
             {isFormSubmitted ? (
               <div className="form-success">
                 <div className="success-icon">✓</div>
                 <h3>Thank you!</h3>
-                <p>Your message has been sent successfully. I'll get back to you soon.</p>
+                <p>
+                  Your message has been sent successfully. I'll get back to you
+                  soon.
+                </p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
