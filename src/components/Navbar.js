@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaUser, FaCode, FaEnvelope } from 'react-icons/fa'; // Import icons
 import '../styles/Navbar.css';
 
 const Navbar = () => {
@@ -20,6 +21,13 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Map navigation items with their icons
+  const navItems = [
+    { name: 'about', icon: <FaUser /> },
+    { name: 'projects', icon: <FaCode /> },
+    { name: 'contact', icon: <FaEnvelope /> }
+  ];
 
   // Animation variants
   const navItemVariants = {
@@ -86,21 +94,25 @@ const Navbar = () => {
         </Link>
 
         <div className="nav-links desktop-nav">
-          {['about', 'projects', 'contact'].map((item, i) => (
+          {navItems.map((item, i) => (
             <motion.div
-              key={item}
+              key={item.name}
               custom={i}
               initial="hidden"
               animate="visible"
               variants={navItemVariants}
             >
               <Link 
-                to={item} 
+                to={item.name} 
+                spy={true}
                 smooth={true} 
+                offset={-70} 
                 duration={500} 
                 className="nav-link"
+                activeClass="active"
               >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
+                <span className="nav-icon">{item.icon}</span>
+                {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
               </Link>
             </motion.div>
           ))}
@@ -130,20 +142,24 @@ const Navbar = () => {
               variants={mobileNavVariants}
             >
               <div className="mobile-nav-content">
-                {['about', 'projects', 'contact'].map((item, i) => (
+                {navItems.map((item, i) => (
                   <motion.div
-                    key={item}
+                    key={item.name}
                     variants={mobileNavItemVariants}
                     whileHover={{ x: 5 }}
                   >
                     <Link 
-                      to={item} 
+                      to={item.name} 
+                      spy={true}
                       smooth={true} 
+                      offset={-70}
                       duration={500} 
                       className="mobile-nav-link" 
+                      activeClass="active"
                       onClick={() => setIsOpen(false)}
                     >
-                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                      <span className="mobile-nav-icon">{item.icon}</span>
+                      {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                     </Link>
                   </motion.div>
                 ))}

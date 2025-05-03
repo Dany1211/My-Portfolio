@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight, FaEye } from 'react-icons/fa';
 import '../styles/Projects.css'
 
-// Project Data (keeping the same data)
 const projectData = [
   {
     id: 1,
@@ -14,7 +13,7 @@ const projectData = [
     image: "https://placehold.co/600x400/f8fafc/64748b?text=Medicine+Tracker"
   },
   {
-    id: 2,
+    id: 2,  
     title: "Wallpaper App",
     description: "A stunning wallpaper browsing app with search and preview functionality.",
     tags: ["React Native", "Expo", "NativeWind", "Axios"],
