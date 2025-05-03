@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaUser, FaCode, FaEnvelope } from 'react-icons/fa'; // Import icons
+import { FaHome, FaUser, FaCode, FaEnvelope } from 'react-icons/fa'; // Added FaHome icon
 import '../styles/Navbar.css';
 
 const Navbar = () => {
@@ -24,6 +24,7 @@ const Navbar = () => {
 
   // Map navigation items with their icons
   const navItems = [
+    { name: 'hero', displayName: 'Home', icon: <FaHome /> },
     { name: 'about', icon: <FaUser /> },
     { name: 'projects', icon: <FaCode /> },
     { name: 'contact', icon: <FaEnvelope /> }
@@ -112,7 +113,7 @@ const Navbar = () => {
                 activeClass="active"
               >
                 <span className="nav-icon">{item.icon}</span>
-                {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                {item.displayName || item.name.charAt(0).toUpperCase() + item.name.slice(1)}
               </Link>
             </motion.div>
           ))}
@@ -159,7 +160,7 @@ const Navbar = () => {
                       onClick={() => setIsOpen(false)}
                     >
                       <span className="mobile-nav-icon">{item.icon}</span>
-                      {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                      {item.displayName || item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                     </Link>
                   </motion.div>
                 ))}
